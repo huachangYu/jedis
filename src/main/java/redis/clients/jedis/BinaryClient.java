@@ -1211,6 +1211,28 @@ public class BinaryClient extends Connection {
     sendCommand(GEOADD, argsArray);
   }
 
+  public void geoaddpolygon(final byte[] key, final byte[] member, GeoPolygon polygon) {
+    List<byte[]> args = new ArrayList<>(polygon.getPoints().size() * 2 + 2);
+    args.add(key);
+    args.add(member);
+    args.addAll(convertGeoPolygonToByteArrays(polygon));
+
+    byte[][] argsArray = new byte[args.size()][];
+    args.toArray(argsArray);
+
+    sendCommand(GEOADDPOLYGON, argsArray);
+  }
+
+  public void geogetpolygon(final byte[] key, final byte[] member) {
+    byte[][] argsArray = {key, member};
+    sendCommand(GEOGETPOLYGON, argsArray);
+  }
+
+  public void geopointinpolygon(final byte[] keyPoint, final byte[] memberPoint, final byte[] keyPolygon, final byte[] memberPolygon) {
+    byte[][] argsArray = {keyPoint, memberPoint, keyPolygon, memberPolygon};
+    sendCommand(GEOPOINTINPOLYGON, argsArray);
+  }
+
   public void geodist(final byte[] key, final byte[] member1, final byte[] member2) {
     sendCommand(GEODIST, key, member1, member2);
   }
@@ -1331,6 +1353,15 @@ public class BinaryClient extends Connection {
       args.add(entry.getKey());
     }
 
+    return args;
+  }
+
+  private List<byte[]> convertGeoPolygonToByteArrays(final GeoPolygon polygon) {
+    List<byte[]> args = new ArrayList<>(polygon.getPoints().size() * 2);
+    for (GeoCoordinate point : polygon.getPoints()) {
+      args.add(toByteArray(point.getLongitude()));
+      args.add(toByteArray(point.getLatitude()));
+    }
     return args;
   }
 

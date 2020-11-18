@@ -865,6 +865,19 @@ public class BinaryShardedJedis extends Sharded<Jedis, JedisShardInfo> implement
     return j.geoadd(key, memberCoordinateMap);
   }
 
+
+  @Override
+  public Long geoaddpolygon(String key, String member, GeoPolygon polygon) {
+    Jedis j = getShard(key);
+    return j.geoaddpolygon(key, member, polygon);
+  }
+
+  @Override
+  public Long geoaddpolygon(byte[] key, byte[] member, GeoPolygon polygon) {
+    Jedis j = getShard(key);
+    return j.geoaddpolygon(key, member, polygon);
+  }
+
   @Override
   public Double geodist(final byte[] key, final byte[] member1, final byte[] member2) {
     Jedis j = getShard(key);

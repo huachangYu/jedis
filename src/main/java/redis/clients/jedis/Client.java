@@ -1100,6 +1100,18 @@ public class Client extends BinaryClient implements Commands {
     geoadd(SafeEncoder.encode(key), convertMemberCoordinateMapToBinary(memberCoordinateMap));
   }
 
+  public void geoaddpolygon(final String key, final String member, GeoPolygon polygon) {
+    geoaddpolygon(SafeEncoder.encode(key), SafeEncoder.encode(member), polygon);
+  }
+
+  public void geogetpolygon(final String key, final String member) {
+    geogetpolygon(SafeEncoder.encode(key), SafeEncoder.encode(member));
+  }
+
+  public void geopointinpolygon(final String keyPoint, final String memberPoint, final String keyPolygon, final String memberPolygon) {
+    geopointinpolygon(SafeEncoder.encode(keyPoint), SafeEncoder.encode(memberPoint), SafeEncoder.encode(keyPolygon), SafeEncoder.encode(memberPolygon));
+  }
+
   public void geodist(final String key, final String member1, final String member2) {
     geodist(SafeEncoder.encode(key), SafeEncoder.encode(member1), SafeEncoder.encode(member2));
   }

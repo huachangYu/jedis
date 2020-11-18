@@ -3589,6 +3589,29 @@ public class Jedis extends BinaryJedis implements JedisCommands, MultiKeyCommand
   }
 
   @Override
+  public Long geoaddpolygon(String key, String member, GeoPolygon polygon) {
+    checkIsInMultiOrPipeline();
+    client.geoaddpolygon(key, member, polygon);
+    return client.getIntegerReply();
+  }
+
+
+  @Override
+  public GeoPolygon geogetpolygon(String key, String member) {
+    checkIsInMultiOrPipeline();
+    client.geogetpolygon(key, member);
+    List<GeoCoordinate> points = BuilderFactory.GEO_COORDINATE_LIST.build(client.getObjectMultiBulkReply());
+    return new GeoPolygon(points);
+  }
+
+  @Override
+  public Boolean geopointinpolygon(String keyPoint, String memberPoint, String keyPolygon, String memberPolygon) {
+    checkIsInMultiOrPipeline();
+    client.geopointinpolygon(keyPoint, memberPoint, keyPolygon, memberPolygon);
+    return client.getIntegerReply() == 1;
+  }
+
+  @Override
   public Double geodist(final String key, final String member1, final String member2) {
     checkIsInMultiOrPipeline();
     client.geodist(key, member1, member2);

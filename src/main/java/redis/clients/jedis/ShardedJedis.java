@@ -900,6 +900,28 @@ public class ShardedJedis extends BinaryShardedJedis implements JedisCommands, C
     return j.geoadd(key, memberCoordinateMap);
   }
 
+
+  @Override
+  public Long geoaddpolygon(String key, String name, GeoPolygon polygon) {
+    Jedis j = getShard(key);
+    return j.geoaddpolygon(key, name, polygon);
+  }
+
+
+  @Override
+  public GeoPolygon geogetpolygon(String key, String member) {
+    Jedis j = getShard(key);
+    return j.geogetpolygon(key, member);
+  }
+
+
+  @Override
+  public Boolean geopointinpolygon(String keyPoint, String memberPoint, String keyPolygon, String memberPolygon) {
+    // TODO: need to fix
+    Jedis jpoint = getShard(keyPoint);
+    return jpoint.geopointinpolygon(keyPoint, memberPoint, keyPolygon, memberPolygon);
+  }
+
   @Override
   public Double geodist(final String key, final String member1, final String member2) {
     Jedis j = getShard(key);

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import redis.clients.jedis.GeoCoordinate;
+import redis.clients.jedis.GeoPolygon;
 import redis.clients.jedis.GeoRadiusResponse;
 import redis.clients.jedis.GeoUnit;
 import redis.clients.jedis.ListPosition;
@@ -281,6 +282,10 @@ public interface BinaryJedisCommands {
   Long geoadd(byte[] key, double longitude, double latitude, byte[] member);
 
   Long geoadd(byte[] key, Map<byte[], GeoCoordinate> memberCoordinateMap);
+
+  Long geoaddpolygon(String key, String member, GeoPolygon polygon);
+  
+  Long geoaddpolygon(byte[] key, byte[] member, GeoPolygon polygon);
 
   Double geodist(byte[] key, byte[] member1, byte[] member2);
 

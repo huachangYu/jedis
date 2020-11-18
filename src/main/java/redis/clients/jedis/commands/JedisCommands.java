@@ -8,6 +8,7 @@ import redis.clients.jedis.BitPosParams;
 import redis.clients.jedis.StreamConsumersInfo;
 import redis.clients.jedis.StreamEntryID;
 import redis.clients.jedis.GeoCoordinate;
+import redis.clients.jedis.GeoPolygon;
 import redis.clients.jedis.GeoRadiusResponse;
 import redis.clients.jedis.GeoUnit;
 import redis.clients.jedis.ListPosition;
@@ -306,6 +307,12 @@ public interface JedisCommands {
   Long geoadd(String key, double longitude, double latitude, String member);
 
   Long geoadd(String key, Map<String, GeoCoordinate> memberCoordinateMap);
+  
+  Long geoaddpolygon(String key, String member, GeoPolygon polygon);
+
+  GeoPolygon geogetpolygon(String key, String member);
+
+  Boolean geopointinpolygon(String keyPoint, String memberPoint, String keyPolygon, String memberPolygon);
 
   Double geodist(String key, String member1, String member2);
 

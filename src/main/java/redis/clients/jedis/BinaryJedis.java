@@ -3875,6 +3875,20 @@ public class BinaryJedis implements BasicCommands, BinaryJedisCommands, MultiKey
   }
 
   @Override
+  public Long geoaddpolygon(String key, String member, GeoPolygon polygon) {
+    checkIsInMultiOrPipeline();
+    client.geoaddpolygon(key, member, polygon);
+    return client.getIntegerReply();
+  }
+
+  @Override
+  public Long geoaddpolygon(byte[] key, byte[] member, GeoPolygon polygon) {
+    checkIsInMultiOrPipeline();
+    client.geoaddpolygon(key, member, polygon);
+    return client.getIntegerReply();
+  }
+
+  @Override
   public Double geodist(final byte[] key, final byte[] member1, final byte[] member2) {
     checkIsInMultiOrPipeline();
     client.geodist(key, member1, member2);

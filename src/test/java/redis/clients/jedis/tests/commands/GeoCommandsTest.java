@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import redis.clients.jedis.GeoCoordinate;
+import redis.clients.jedis.GeoPolygon;
 import redis.clients.jedis.GeoRadiusResponse;
 import redis.clients.jedis.GeoUnit;
 import redis.clients.jedis.params.GeoRadiusParam;
@@ -53,6 +55,38 @@ public class GeoCommandsTest extends JedisCommandTestBase {
 
     size = jedis.geoadd(bfoo, bcoordinateMap);
     assertEquals(2, size);
+  }
+
+  @Test
+  public void geogetpolygon() {
+    List<GeoCoordinate> points = new ArrayList<>();
+    points.add(new GeoCoordinate(120, 30));
+    points.add(new GeoCoordinate(121, 31));
+    points.add(new GeoCoordinate(122, 30));
+    points.add(new GeoCoordinate(120, 30));
+    GeoPolygon polygon = new GeoPolygon(points);
+
+    long size = jedis.geoaddpolygon("gp", "p0", polygon);
+    GeoPolygon polygon2 = jedis.geogetpolygon("gp", "p0");
+    assertEquals(1, size);
+    assertTrue(polygon.equals(polygon2));
+  }
+
+  @Test
+  public void geopointinpolygon() {
+    List<GeoCoordinate> points = new ArrayList<>();
+    points.add(new GeoCoordinate(120, 30));
+    points.add(new GeoCoordinate(121, 31));
+    points.add(new GeoCoordinate(122, 30));
+    points.add(new GeoCoordinate(120, 30));
+    GeoPolygon polygon = new GeoPolygon(points);
+
+    long polygonStatus = jedis.geoaddpolygon("gp", "p0", polygon);
+    long pointStatus = jedis.geoadd("pt", 121, 30.5, "pt0");
+    Boolean res = jedis.geopointinpolygon("pt", "pt0", "gp", "p0");
+    assertEquals(polygonStatus, 1);
+    assertEquals(pointStatus, 1);
+    assertTrue(res);
   }
 
   @Test
